@@ -20,9 +20,9 @@ module.exports = function(grunt) {
      */
     'git': function(options){
         process.chdir(options.dir);
-        execWithOutput("git pull origin master");
+        grunt.task.helper('exec-with-output', 'git pull origin master');
         done = this.async();
-        options.buildCmd && execWithOutput(options.buildCmd, done);
+        options.buildCmd && grunt.task.helper('exec-with-output', options.buildCmd, done);
       },
     
     /**
@@ -30,7 +30,7 @@ module.exports = function(grunt) {
      */
     'bower': function(options){
         process.cwd(initialDir);
-        execWithOutput("bower update " + options.packageName);
+        grunt.task.helper('exec-with-output', "bower update " + options.packageName);
       }
   };
 
@@ -122,7 +122,7 @@ module.exports = function(grunt) {
   /**
    * @param {string} cmd
    */
-  function execWithOutput(cmd, done){
+  grunt.task.registerHelper('exec-with-output', function execWithOutput(cmd, done){
     child_process.exec(cmd, function (error, stdout, stderr){
       grunt.log.writeln('stdout: ' + formatExecOutpuTitle(stdout));
       grunt.log.writeln('stderr: ' + formatExecOutpuTitle(stderr));
@@ -131,7 +131,7 @@ module.exports = function(grunt) {
       }
       done(error);
     });
-  }
+  });
 
   /**
    * @param {string} text
