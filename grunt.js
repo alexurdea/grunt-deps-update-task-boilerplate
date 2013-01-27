@@ -44,7 +44,7 @@ module.exports = function(grunt) {
     'backbone': {
       from: __dirname + '/repos/backbone/backbone-min.js',
       to: __dirname + '/' + LIB + '/backbone-min.js',
-      buildCmd: 'rake build',
+      buildCmd: 'rake test; rake build;',
       type: 'git'
     }
   };
@@ -82,7 +82,7 @@ module.exports = function(grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', 'lint qunit');
+  grunt.registerTask('default', 'update lint qunit');
 
   grunt.registerTask('update', 'copy the latest versions of dependency files', function(){
     var depProps;
