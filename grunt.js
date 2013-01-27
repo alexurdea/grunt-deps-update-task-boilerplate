@@ -15,14 +15,14 @@ module.exports = function(grunt) {
      * be able to access the async function, in case they need it!
      * 
      * @param {string} options.dir
-     * @param {string} options.buildCmd
+     * @param {string} options.makeCmd
      */
     'git': function(options){
         var done = this.async();
         
         process.chdir(options.dir);
         grunt.task.helper('exec-with-output', 'git pull origin master');
-        options.buildCmd && grunt.task.helper('exec-with-output', options.buildCmd, done);
+        options.makeCmd && grunt.task.helper('exec-with-output', options.makeCmd, done);
       },
     
     /**
@@ -44,7 +44,7 @@ module.exports = function(grunt) {
     'backbone': {
       from: __dirname + '/repos/backbone/backbone-min.js',
       to: __dirname + '/' + LIB + '/backbone-min.js',
-      buildCmd: 'rake test; rake build;',
+      makeCmd: 'rake test; rake build;',
       type: 'git'
     }
   };
@@ -93,7 +93,7 @@ module.exports = function(grunt) {
       updateFn[depProps.type].bind(this)({
         dir: path.dirname(depProps.from),
         packageName: dep,
-        buildCmd: depProps.buildCmd
+        makeCmd: depProps.makeCmd
       });
       grunt.file.copy(depProps.from, depProps.to);
     }
