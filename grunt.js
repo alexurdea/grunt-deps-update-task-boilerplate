@@ -18,9 +18,10 @@ module.exports = function(grunt) {
      * @param {string} options.buildCmd
      */
     'git': function(options){
+        var done = this.async();
+        
         process.chdir(options.dir);
         grunt.task.helper('exec-with-output', 'git pull origin master');
-        done = this.async();
         options.buildCmd && grunt.task.helper('exec-with-output', options.buildCmd, done);
       },
     
@@ -41,9 +42,9 @@ module.exports = function(grunt) {
       type: 'bower'
     },
     'backbone': {
-      from: __dirname + '/repos/backbone/backbone.js',
-      to: __dirname + '/' + LIB + '/backbone.js',
-      buildCmd: 'git log -2',
+      from: __dirname + '/repos/backbone/backbone-min.js',
+      to: __dirname + '/' + LIB + '/backbone-min.js',
+      buildCmd: 'rake build',
       type: 'git'
     }
   };
@@ -121,21 +122,24 @@ module.exports = function(grunt) {
   /**
    * @param {string} cmd
    */
-  grunt.task.registerHelper('exec-with-output', function execWithOutput(cmd, done){
+  grunt.task.registerHelper('exec-with-output', function(cmd, done){
     child_process.exec(cmd, function (error, stdout, stderr){
-      grunt.log.writeln('stdout: ' + formatExecOutpuTitle(stdout));
-      grunt.log.writeln('stderr: ' + formatExecOutpuTitle(stderr));
+      grunt.log.writeln(formatExecOutpuTitle(cmd, 'stdout', stdout));
+      grunt.log.writeln(formatExecOutpuTitle(cmd, 'stderr', stderr));
       if (error !== null){
-        grunt.log.writeln('exec error: ' +  + error);
+        grunt.log.writeln(formatExecOutpuTitle(cmd, 'exec error', error));
       }
-      done(error);
+      done && done(error);
     });
 
     /**
+     * @param {string} cmd
+     * @param {string} bufferName
      * @param {string} text
      */
-    function formatExecOutpuTitle(text){
-      return '\n#############################\n' + text + '\n';
+    function formatExecOutpuTitle(cmd, bufferName, text){
+      return '`' + cmd + '` => ' + bufferName 
+        + ':\n############################################\n' + (text.length ? text : '-') + '\n';
     }
   });
 };
