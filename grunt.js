@@ -1,14 +1,13 @@
 var path = require('path'),
     child_process = require('child_process');
 
-/*global module:false*/
 module.exports = function(grunt) {
   var self = this,
       initialDir = process.cwd();
 
   var LIB = 'js/lib';
 
-  // commands to handle updates
+  // Functions to handle updates
   var updateFn = {
     
     /**
@@ -34,7 +33,7 @@ module.exports = function(grunt) {
       }
   };
 
-  // paths are relative to current dir
+  // Paths are relative to current dir
   var depsToUpdate = {
     'bacon': {
       from: __dirname + '/components/bacon/lib/Bacon.js',
@@ -101,7 +100,7 @@ module.exports = function(grunt) {
     process.chdir(path.dirname(initialDir));
   });
 
-  // revert, useful when testing the update task
+  // Revert - useful when testing the update task
   grunt.registerTask('revert-update', function(){
     var depProps;
 
