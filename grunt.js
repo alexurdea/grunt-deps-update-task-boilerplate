@@ -131,12 +131,12 @@ module.exports = function(grunt) {
       }
       done(error);
     });
-  });
 
-  /**
-   * @param {string} text
-   */
-  function formatExecOutpuTitle(text){
-    return '\n#############################\n' + text + '\n';
-  }
+    /**
+     * @param {string} text
+     */
+    function formatExecOutpuTitle(text){
+      return '\n#############################\n' + text + '\n';
+    }
+  });
 };
